@@ -1,0 +1,1473 @@
+,signature,body,docstring,id
+11451,"fun <T: Any, DefaultType: DefaultRequiredType> MultipleOption<T, MultipleOptionType.Delimited, DefaultType>.multiple(): MultipleOption<T, MultipleOptionType.RepeatedDelimited, DefaultRequiredType>","{
+    val newOption = with((delegate.cast<ParsingValue<T, List<T>>>()).descriptor as OptionDescriptor) {
+        if (multiple) {
+            error(""Try to use modifier multiple() twice on option ${fullName ?: """"}"")
+        }
+        MultipleOption<T, MultipleOptionType.RepeatedDelimited, DefaultRequiredType>(OptionDescriptor(optionFullFormPrefix, optionShortFromPrefix, type, fullName, shortName, description, defaultValue?.toList() ?: listOf(), required, true, delimiter, deprecatedWarning), owner)
+    }
+    owner.entity = newOption
+    return newOption
+}","/**
+
+ * Allows the option to have several values specified in command line string.
+
+ * Number of values is unlimited.
+
+ */",f3549:m237
+58508,"public inline fun <K, V> Map<out K, V>.none(predicate: (Map.Entry<K, V>) -> Boolean): Boolean","{
+    if (isEmpty()) return true
+    for (element in this) if (predicate(element)) return false
+    return true
+}","/**
+
+ * Returns `true` if no entries match the given [predicate].
+
+ * 
+
+ * @sample samples.collections.Collections.Aggregates.noneWithPredicate
+
+ */",f17089:m1095
+9075,"private fun buildObjectGetter(objectSymbol: IrClassSymbol, owner: IrClass, getterName: Name): IrSimpleFunction","context.irFactory.createSimpleFunction(owner.startOffset, owner.endOffset, TEST_SUITE_GENERATED_MEMBER, getterName, DescriptorVisibilities.PROTECTED, isInline = false, isExpect = false, objectSymbol.starProjectedType, Modality.FINAL, IrSimpleFunctionSymbolImpl(), isTailrec = false, isSuspend = false, isOperator = false, isInfix = false).apply {
+    parent = owner
+    val superFunction = baseClassSuite.simpleFunctions().single { it.name == getterName && it.valueParameters.isEmpty() }
+    createDispatchReceiverParameter()
+    overriddenSymbols += superFunction.symbol
+    body = context.createIrBuilder(symbol, symbol.owner.startOffset, symbol.owner.endOffset).irBlockBody { +irReturn(irGetObjectValue(objectSymbol.typeWithArguments(emptyList()), objectSymbol)) }
+}","/**
+
+     * Builds a method in `[owner]` class with name `[getterName]`
+
+     * returning a reference to an object represented by `[objectSymbol]`.
+
+     */",f3318:m653
+70143,private fun parseContractAndReportErrors(callContext: ContractCallContext): ContractDescription?,"{
+    val collector = TraceBasedCollector(callContext)
+    try {
+        checkFeatureEnabled(collector)
+        val contractNotAllowed = callContext.bindingContext[BindingContext.CONTRACT_NOT_ALLOWED, callContext.contractCallExpression] == true
+        if (collector.hasErrors() || contractNotAllowed) return null
+        val parsedContract = PsiContractParserDispatcher(collector, callContext, storageManager).parseContract()
+        if (parsedContract == null) collector.addFallbackErrorIfNecessary()
+        return parsedContract?.takeUnless { collector.hasErrors() }
+    } finally {
+        collector.flushDiagnostics()
+    }
+}","/**
+
+     * This function deals with some call that is guaranteed to resolve to 'contract' from stdlib, so,
+
+     * ideally, it should satisfy following condition: null returned <=> at least one error was reported
+
+     */",f19593:m127
+58814,public inline fun <T> Sequence<T>.all(predicate: (T) -> Boolean): Boolean,"{
+    for (element in this) if (!predicate(element)) return false
+    return true
+}","/**
+
+ * Returns `true` if all elements match the given [predicate].
+
+ * 
+
+ * Note that if the sequence contains no elements, the function returns `true`
+
+ * because there are no elements in it that _do not_ match the predicate.
+
+ * See a more detailed explanation of this logic concept in [""Vacuous truth""](https://en.wikipedia.org/wiki/Vacuous_truth) article.
+
+ *
+
+ * The operation is _terminal_.
+
+ * 
+
+ * @sample samples.collections.Collections.Aggregates.all
+
+ */",f17096:m2431
+59087,"@SinceKotlin(""1.5"") @WasExperimental(ExperimentalUnsignedTypes::class) public fun maxOf(a: UByte, b: UByte): UByte","{
+    return if (a >= b) a else b
+}","/**
+
+ * Returns the greater of two values.
+
+ */",f17098:m73
+15396,@Test fun maxDD(),"{
+    assertEquals(""Incorrect Double max value"", 1908897.6000089, max(-1908897.6000089, 1908897.6000089), 0.0)
+    assertEquals(""Incorrect Double max value"", 1908897.6000089, max(2.0, 1908897.6000089), 0.0)
+    assertEquals(""Incorrect Double max value"", -2.0, max(-2.0, -1908897.6000089), 0.0)
+    assertEquals((Double.NaN).toString(), max(Double.NaN, 42.0).toString(), ""Max failed for NaN"")
+    assertEquals((Double.NaN).toString(), max(42.0, Double.NaN).toString(), ""Max failed for NaN"")
+    assertEquals((+0.0).toString(), max(+0.0, -0.0).toString(), ""Max failed for 0.0"")
+    assertEquals((+0.0).toString(), max(-0.0, +0.0).toString(), ""Max failed for 0.0"")
+    assertEquals((-0.0).toString(), max(-0.0, -0.0).toString(), ""Max failed for -0.0d"")
+    assertEquals((+0.0).toString(), max(+0.0, +0.0).toString(), ""Max failed for 0.0"")
+}","/**
+
+     * Tests kotlin.math.max(Double, Double)
+
+     */",f3868:m847
+67430,"override fun printBuildReport(data: Any, outputFile: File)","{
+    outputFile.bufferedWriter().use { it.write(gson.toJson(data)) }
+}","/**
+
+     * Prints general build information and task/transform build metrics
+
+     */",f19200:m47
+63475,"@SinceKotlin(""1.4"") public actual fun ShortArray?.contentToString(): String","{
+    return this?.joinToString("", "", ""["", ""]"") ?: ""null""
+}","/**
+
+ * Returns a string representation of the contents of the specified array as if it is [List].
+
+ * 
+
+ * @sample samples.collections.Arrays.ContentOperations.contentToString
+
+ */",f17396:m2057
+64031,@kotlin.internal.IntrinsicConstEvaluation public inline operator fun compareTo(other: Float): Int,this.toFloat().compareTo(other),"/**
+
+     * Compares this value with the specified value for order.
+
+     * Returns zero if this value is equal to the specified other value, a negative number if it's less than other,
+
+     * or a positive number if it's greater than other.
+
+     */",f17455:m155
+58656,public infix fun Int.downTo(to: Short): IntProgression,"{
+    return IntProgression.fromClosedRange(this, to.toInt(), -1)
+}","/**
+
+ * Returns a progression from this value down to the specified [to] value with the step -1.
+
+ * 
+
+ * The [to] value should be less than or equal to `this` value.
+
+ * If the [to] value is greater than `this` value the returned progression is empty.
+
+ */",f17092:m1791
+27468,"internal fun getGeneratedToSources(): Map<File, String?>",if (isFullRebuild) emptyMap() else generatedToSource,/** Mapping from generated files to top level class names that cause that file generation. */,f9697:m373
+21137,"internal fun getSourceFilePaths(compilerConfig: CompilerConfiguration, includeDirectoryRoot: Boolean = false): Set<Path>","{
+    return buildSet { compilerConfig.javaSourceRoots.forEach { srcRoot ->
+        val path = Paths.get(srcRoot)
+        if (Files.isDirectory(path)) {
+            addAll(collectSourceFilePaths(path))
+            if (includeDirectoryRoot) {
+                add(path)
+            }
+        } else {
+            add(path)
+        }
+    } }
+}","/**
+
+ * Collect source file path as [String] from the given source roots in [compilerConfig].
+
+ *
+
+ * Such source roots are either [KotlinSourceRoot] or [JavaSourceRoot], and thus
+
+ * this util collects all `.kt` and `.java` files under source roots.
+
+ */",f8481:m111
+58758,public fun <T> Sequence<T>.dropWhile(predicate: (T) -> Boolean): Sequence<T>,"{
+    return DropWhileSequence(this, predicate)
+}","/**
+
+ * Returns a sequence containing all elements except first elements that satisfy the given [predicate].
+
+ *
+
+ * The operation is _intermediate_ and _stateless_.
+
+ * 
+
+ * @sample samples.collections.Collections.Transformations.drop
+
+ */",f17096:m831
+9675,"@Suppress(""UNUSED_PARAMETER"") fun tryEvaluateSpecialCall(callSite: IrFunctionAccessExpression, resultSlot: LLVMValueRef?): LLVMValueRef?","{
+    val function = callSite.symbol.owner
+    if (!function.isTypedIntrinsic) {
+        return null
+    }
+    return when (getIntrinsicType(callSite)) {
+        IntrinsicType.IMMUTABLE_BLOB -> {
+            @Suppress(""UNCHECKED_CAST"") val arg = callSite.getValueArgument(0) as IrConst<String>
+            codegen.llvm.staticData.createImmutableBlob(arg)
+        }
+        IntrinsicType.OBJC_GET_SELECTOR -> {
+            val selector = (callSite.getValueArgument(0) as IrConst<*>).value as String
+            environment.functionGenerationContext.genObjCSelector(selector)
+        }
+        IntrinsicType.INIT_INSTANCE -> {
+            val initializer = callSite.getValueArgument(1) as IrConstructorCall
+            val thiz = environment.evaluateExpression(callSite.getValueArgument(0)!!, null)
+            environment.evaluateCall(initializer.symbol.owner, listOf(thiz) + environment.evaluateExplicitArgs(initializer), environment.calculateLifetime(initializer))
+            codegen.theUnitInstanceRef.llvm
+        }
+        else -> null
+    }
+}","/**
+
+     * Some intrinsics have to be processed before evaluation of their arguments.
+
+     * So this method looks at [callSite] and if it is call to ""special"" intrinsic
+
+     * processes it. Otherwise, it returns null.
+
+     */",f3379:m355
+14053,public fun incrementAndGet(): Int,this::value.getAndAddField(1) + 1,"/**
+
+     * Atomically increments the current value by one and returns the new value.
+
+     */",f3718:m113
+51940,fun ScriptingHostConfiguration.Builder.getEvaluationContext(handler: GetEvaluationContext),"{
+    ScriptingHostConfiguration.getEvaluationContext.put(handler)
+}","/**
+
+ * A helper to enable passing lambda directly to the getEvaluationContext ""keyword""
+
+ */",f16416:m155
+27504,fun getAllImpactedTypes(changes: Changes): MutableSet<String>,"{
+    fun findImpactedTypes(changedType: String, transitiveDeps: MutableSet<String>, nonTransitiveDeps: MutableSet<String>) {
+        dependencyCache[changedType]?.let { impactedSources -> impactedSources.forEach { transitiveDeps.addAll(sourceCache.getValue(it).declaredTypes) } }
+        nonTransitiveCache[changedType]?.let { impactedSources -> impactedSources.forEach { nonTransitiveDeps.addAll(sourceCache.getValue(it).declaredTypes) } }
+    }
+    val allDirtyTypes = mutableSetOf<String>()
+    var currentDirtyTypes = getTypesForFiles(changes.sourceChanges).toMutableSet()
+    changes.dirtyFqNamesFromClasspath.forEach { classpathChange -> findImpactedTypes(classpathChange, currentDirtyTypes, allDirtyTypes) }
+    while (currentDirtyTypes.isNotEmpty()) {
+        val nextRound = mutableSetOf<String>()
+        for (dirtyType in currentDirtyTypes) {
+            allDirtyTypes.add(dirtyType)
+            findImpactedTypes(dirtyType, nextRound, allDirtyTypes)
+        }
+        currentDirtyTypes = nextRound.filterTo(HashSet()) { it !in allDirtyTypes }
+    }
+    return allDirtyTypes
+}","/**
+
+     * Compute the list of types that are impacted by source changes i.e [Changes.sourceChanges] and [Changes.dirtyFqNamesFromClasspath]
+
+     * i.e classpath changes. The search is transitive, if a file is impacted, all files referencing types defined in that file are
+
+     * also considered impacted. Only original sources and generated sources are reported as impacted (final result does not contain
+
+     * classpath types).
+
+     */",f9700:m197
+58680,public infix fun Int.until(to: Byte): IntRange,"{
+    return this .. (to.toInt() - 1).toInt()
+}","/**
+
+ * Returns a range from this value up to but excluding the specified [to] value.
+
+ * 
+
+ * If the [to] value is less than or equal to `this` value, then the returned range is empty.
+
+ */",f17092:m2085
+17174,private fun findDirectiveInLines(iterator: Iterator<String>): Boolean,"{
+    val firstNonBlankLine = iterator.nextNonBlankLineTrimmed()
+    if (firstNonBlankLine != LL_FIR_DIVERGENCE_DIRECTIVE_COMMENT) return false
+    while (iterator.hasNext()) {
+        val line = iterator.nextNonBlankLineTrimmed() ?: return false
+        if (line.startsWith(""//"")) {
+            if (line == LL_FIR_DIVERGENCE_DIRECTIVE_COMMENT) return true
+        } else return false
+    }
+    return false
+}","/**
+
+ * Tries to find the `LL_FIR_DIVERGENCE` directive in the lines given by [iterator] and returns whether this is the case. If the directive
+
+ * was found, [iterator] is guaranteed to be advanced exactly past the `LL_FIR_DIVERGENCE` directive.
+
+ *
+
+ * The format of the directive is as such:
+
+ *
+
+ * ```
+
+ * // LL_FIR_DIVERGENCE
+
+ * // lorem ipsum
+
+ * // dolor sit amet
+
+ * // LL_FIR_DIVERGENCE
+
+ * ```
+
+ *
+
+ * Blank lines before the directive or inside the directive region are ignored.
+
+ */",f5176:m61
+1707,private fun isReceiverAncestor(descriptor: DeclarationDescriptor): Boolean,"{
+    if (descriptor !is ReceiverParameterDescriptor) return false
+    if (containingDescriptor !is ClassDescriptor && containingDescriptor !is ConstructorDescriptor) return false
+    val containingClass = getParentOfType(containingDescriptor, ClassDescriptor::class.java, false) ?: return false
+    val currentClass = descriptor.containingDeclaration as? ClassDescriptor ?: return false
+    for (outerDeclaration in generateSequence(containingClass) { it.containingDeclaration as? ClassDescriptor }) {
+        if (outerDeclaration == currentClass) return true
+    }
+    return false
+}","/**
+
+     * We shouldn't capture current `this` or outer `this`. Assuming `C` is current translating class,
+
+     * we have `descriptor == A::this` in the following cases:
+
+     * * `A == C`
+
+     * * `C` in inner class of `A`
+
+     * * `A <: C`
+
+     * * among outer classes of `C` there is `T` such that `A <: T`
+
+     *
+
+     * If fact, the latter case is the generalization of all previous cases, assuming that `is inner class of` and `<:` relations
+
+     * are reflective. All this cases allow to refer to `this` directly or via sequence of `outer` fields.
+
+     *
+
+     * Note that the continuous sequence of inner classes may be interrupted by non-class descriptor. This means that
+
+     * the last class of the sequence if a local class. We stop there, since this means that the next class in the sequence
+
+     * is referred by closure variable rather than by dedicated `$outer` field.
+
+     *
+
+     * The nested classes are out of scope, since nested class can't refer to outer's class `this`, thus frontend will
+
+     * never generate ReceiverParameterDescriptor for this case.
+
+     */",f381:m195
+28173,internal fun computeAllSourceSets(project: Project): List<SourceSetWrapper>,"{
+    return buildList {
+        val existingNames = HashSet<String>()
+        for (javaSourceSet in project.sourceSets.orEmpty()) {
+            if (existingNames.add(javaSourceSet.name)) {
+                add(SourceSetWrapper.JavaSourceSet(javaSourceSet))
+            }
+        }
+        val kotlinExtension = project.extensions.findByName(""kotlin"")
+        if (kotlinExtension != null) {
+            val kotlinSourceSets = kotlinExtension.javaClass.getMethod(""getSourceSets"").invoke(kotlinExtension)
+            if (kotlinSourceSets is NamedDomainObjectContainer<*>) {
+                for (kotlinSourceSet in kotlinSourceSets) {
+                    val name = (kotlinSourceSet as Named).name
+                    if (existingNames.add(name)) {
+                        add(SourceSetWrapper.KotlinSourceSet(kotlinSourceSet))
+                    }
+                }
+            }
+        }
+    }
+}","/**
+
+ * Returns both Java and Kotlin source sets, including multiplatform ones.
+
+ */",f9933:m681
+56866,"@SinceKotlin(""1.4"") @kotlin.internal.InlineOnly public actual inline fun Int.takeHighestOneBit(): Int",Integer.highestOneBit(this),"/**
+
+ * Returns a number having a single bit set in the position of the most significant set bit of this [Int] number,
+
+ * or zero, if this number is zero.
+
+ */",f16929:m235
+56012,"@SinceKotlin(""1.3"") @kotlin.internal.InlineOnly public inline fun <K, V> Map<out K, V>?.isNullOrEmpty(): Boolean","{
+    contract { returns(false) implies (this@isNullOrEmpty != null) }
+    return this == null || isEmpty()
+}","/**
+
+ * Returns `true` if this nullable map is either null or empty.
+
+ * @sample samples.collections.Maps.Usage.mapIsNullOrEmpty
+
+ */",f16823:m415
+63167,internal fun assert(value: Boolean),"{
+    assert(value) { ""Assertion failed"" }
+}","/**
+
+ * Throws an [AssertionError] if the [value] is false.
+
+ */",f17307:m19
+48351,"fun run(project: Project, actionId: String, action: () -> Unit)","{
+    val performedActions = performedActions.computeIfAbsent(selectKey(project)) { mutableSetOf() }
+    if (performedActions.add(actionId)) {
+        action()
+    }
+}","/**
+
+     * Runs an [action] once per key value which is being calculated as a combination of a [selectKey] value and an [actionId]
+
+     *
+
+     * Warning: if KGP is loaded multiple times by different classloaders, actions with the same [actionId] may be executed more than once
+
+     */",f15609:m43
+63487,"@SinceKotlin(""1.3"") @Suppress(""ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS"") public actual fun FloatArray.copyInto(destination: FloatArray, destinationOffset: Int = 0, startIndex: Int = 0, endIndex: Int = size): FloatArray","{
+    AbstractList.checkRangeIndexes(startIndex, endIndex, this.size)
+    val rangeSize = endIndex - startIndex
+    AbstractList.checkRangeIndexes(destinationOffset, destinationOffset + rangeSize, destination.size)
+    kotlin.wasm.internal.copyWasmArray(this.storage, destination.storage, startIndex, destinationOffset, rangeSize)
+    return destination
+}","/**
+
+ * Copies this array or its subrange into the [destination] array and returns that array.
+
+ * 
+
+ * It's allowed to pass the same array in the [destination] and even specify the subrange so that it overlaps with the destination range.
+
+ * 
+
+ * @param destination the array to copy to.
+
+ * @param destinationOffset the position in the [destination] array to copy to, 0 by default.
+
+ * @param startIndex the beginning (inclusive) of the subrange to copy, 0 by default.
+
+ * @param endIndex the end (exclusive) of the subrange to copy, size of this array by default.
+
+ * 
+
+ * @throws IndexOutOfBoundsException or [IllegalArgumentException] when [startIndex] or [endIndex] is out of range of this array indices or when `startIndex > endIndex`.
+
+ * @throws IndexOutOfBoundsException when the subrange doesn't fit into the [destination] array starting at the specified [destinationOffset],
+
+ * or when that index is out of the [destination] array indices range.
+
+ * 
+
+ * @return the [destination] array.
+
+ */",f17396:m2457
+20178,public fun KtExpression.getImplicitReceiverSmartCast(): Collection<KtImplicitReceiverSmartCast>,withValidityAssertion { analysisSession.smartCastProvider.getImplicitReceiverSmartCast(this) },"/**
+
+     * Returns the list of implicit smart-casts which are required for the expression to be called. Includes only implicit
+
+     * smart-casts:
+
+     *
+
+     * ```kt
+
+     * if (this is String) {
+
+     *   this.substring() // 'this' receiver is explicit, so no implicit smart-cast here.
+
+     *
+
+     *   smartcast() // 'this' receiver is implicit, therefore there is implicit smart-cast involved.
+
+     * }
+
+     * ```
+
+     */",f5786:m51
+63197,"@SinceKotlin(""1.2"") public actual fun Double.Companion.fromBits(bits: Long): Double",wasm_f64_reinterpret_i64(bits),"/**
+
+ * Returns the [Double] value corresponding to a given bit representation.
+
+ */",f17314:m371
+57269,"@SinceKotlin(""1.4"") @kotlin.internal.InlineOnly public actual inline fun ByteArray?.contentHashCode(): Int","{
+    return java.util.Arrays.hashCode(this)
+}","/**
+
+ * Returns a hash code based on the contents of this array as if it is [List].
+
+ */",f16970:m1483
+14018,@kotlin.internal.InlineOnly public actual inline fun String.toLong(): Long,toLongOrNull() ?: throw NumberFormatException(),"/**
+
+ * Parses the string as a [Long] number and returns the result.
+
+ * @throws NumberFormatException if the string is not a valid representation of a number.
+
+ */",f3714:m223
+15041,"@SinceKotlin(""1.1"") @kotlin.internal.InlineOnly public actual inline fun minOf(a: Float, b: Float): Float","{
+    return when {
+        a.isNaN() -> a
+        b.isNaN() -> b
+        else -> if (a.compareTo(b) <= 0) a else b
+    }
+}","/**
+
+ * Returns the smaller of two values.
+
+ * 
+
+ * If either value is `NaN`, returns `NaN`.
+
+ */",f3836:m543
+58030,@kotlin.internal.InlineOnly public inline operator fun minus(other: ULong): ULong,this.toULong().minus(other),/** Subtracts the other value from this value. */,f17058:m191
+56537,"@Suppress(""DEPRECATION"") @Deprecated(""Use appendLine instead. Note that the new method always appends the line feed character '\\n' regardless of the system line separator."", ReplaceWith(""appendLine(value)""), level = DeprecationLevel.WARNING) @kotlin.internal.InlineOnly public inline fun StringBuilder.appendln(value: Byte): StringBuilder",append(value.toInt()).appendln(),"/** Appends [value] to this [StringBuilder], followed by a line separator. */",f16890:m763
+57468,"@SinceKotlin(""1.4"") @OptIn(kotlin.experimental.ExperimentalTypeInference::class) @OverloadResolutionByLambdaReturnType @kotlin.jvm.JvmName(""sumOfBigDecimal"") @kotlin.internal.InlineOnly public inline fun DoubleArray.sumOf(selector: (Double) -> java.math.BigDecimal): java.math.BigDecimal","{
+    var sum: java.math.BigDecimal = 0.toBigDecimal()
+    for (element in this) {
+        sum += selector(element)
+    }
+    return sum
+}","/**
+
+ * Returns the sum of all values produced by [selector] function applied to each element in the array.
+
+ */",f16970:m5825
+27538,"override fun isSameFile(a: FileObject, b: FileObject): Boolean","{
+    return super.isSameFile(unwrapObject(a), unwrapObject(b))
+}",/** javac does not play nice with wrapped file objects in this method; so we unwrap */,f9703:m179
+50870,"internal fun Project.checkDiagnostics(testDataName: String, compactRendering: Boolean = true)","{
+    val diagnosticsPerProject = rootProject.allprojects.mapNotNull {
+        val diagnostics = it.kotlinToolingDiagnosticsCollector.getDiagnosticsForProject(it)
+        if (diagnostics.isEmpty() && compactRendering) null else it.name to diagnostics
+    }.toMap()
+    val expectedDiagnostics = expectedDiagnosticsFile(testDataName)
+    if (diagnosticsPerProject.all { (_, diagnostics) -> diagnostics.isEmpty() }) {
+        if (expectedDiagnostics.exists()) error(""Expected to have some diagnostics in file://${expectedDiagnostics.canonicalPath}, but none were actually reported"") else return
+    }
+    val actualRenderedText = if (diagnosticsPerProject.size == 1 && compactRendering) {
+        diagnosticsPerProject.entries.single().value.render()
+    } else { diagnosticsPerProject.entries.joinToString(separator = ""\n\n"") { (projectName, diagnostics) ->
+        val nameSanitized = if (projectName == ""test"") ""<root>"" else projectName
+        ""PROJECT: $nameSanitized\n"" + diagnostics.render()
+    } }
+    val sanitizedTest = actualRenderedText.replace(File.separator, ""/"")
+    KotlinTestUtils.assertEqualsToFile(expectedDiagnostics, sanitizedTest)
+}","/**
+
+ * [compactRendering] == true will omit projects with no diagnostics from the report, as well as
+
+ * name of the project if it's a single one with diagnostics (useful for small one-project tests)
+
+ */",f16183:m65
+14793,"@Deprecated(""Use Kotlin compiler 1.4 to avoid deprecation warning."") @SinceKotlin(""1.3"") @DeprecatedSinceKotlin(hiddenSince = ""1.4"") @ExperimentalUnsignedTypes public infix fun ULongArray.contentEquals(other: ULongArray): Boolean","{
+    return this.contentEquals(other)
+}","/**
+
+ * Checks if the two specified arrays are *structurally* equal to one another.
+
+ * 
+
+ * Two arrays are considered structurally equal if they have the same size, and elements at corresponding indices are equal.
+
+ * 
+
+ * @param other the array to compare with this array.
+
+ * @return `true` if the two arrays are structurally equal, `false` otherwise.
+
+ * 
+
+ * @sample samples.collections.Arrays.ContentOperations.intArrayContentEquals
+
+ */",f3828:m291
+16618,"@Suppress(""INVISIBLE_REFERENCE"", ""INVISIBLE_MEMBER"") inline fun <reified S: FirBasedSymbol<*>> KtDeclaration.resolveToFirSymbolOfTypeSafe(firResolveSession: LLFirResolveSession, phase: FirResolvePhase = FirResolvePhase.RAW_FIR): @kotlin.internal.NoInfer S?","{
+    return resolveToFirSymbol(firResolveSession, phase) as? S
+}","/**
+
+ * Creates [FirBasedSymbol] by [KtDeclaration] .
+
+ * returned [FirDeclaration] will be resolved at least to [phase]
+
+ *
+
+ * If resulted [FirBasedSymbol] is not subtype of [S], returns `null`
+
+ */",f4145:m113
+52040,fun <R> ResultWithDiagnostics<R>.valueOrThrow(): R,"valueOr { throw RuntimeException(reports.joinToString(""\n"") { it.exception?.toString() ?: it.message }, reports.find { it.exception != null }?.exception) }","/**
+
+ * Extracts the result value from the receiver wrapper or throw RuntimeException with diagnostics
+
+ */",f16426:m601
+16690,"private fun rebindPropertyRef(expression: FirExpression, newPropertySymbol: FirPropertySymbol, oldPropertySymbol: FirPropertySymbol)","{
+    requireWithAttachment(expression is FirCallableReferenceAccess, { ""Unexpected second argument: ${expression::class.simpleName}"" }) {
+        withFirSymbolEntry(""newTarget"", newPropertySymbol)
+        withFirSymbolEntry(""oldTarget"", oldPropertySymbol)
+        withFirEntry(""expression"", expression)
+    }
+    val calleeReference = expression.resolvedCalleeReference(newPropertySymbol = newPropertySymbol, oldPropertySymbol = oldPropertySymbol)
+    val resolvedPropertySymbol = calleeReference.resolvedSymbol
+    requireWithAttachment(resolvedPropertySymbol == oldPropertySymbol, { ""Unexpected symbol: ${resolvedPropertySymbol::class.simpleName}"" }) {
+        withFirEntry(""expression"", expression)
+        withFirSymbolEntry(""actualOldProperty"", resolvedPropertySymbol)
+        withFirSymbolEntry(""expectedOldProperty"", oldPropertySymbol)
+        withFirSymbolEntry(""newProperty"", newPropertySymbol)
+    }
+    expression.replaceCalleeReference(buildResolvedNamedReference {
+        source = calleeReference.source
+        name = calleeReference.name
+        resolvedSymbol = newPropertySymbol
+    })
+    expression.replaceTypeArguments(newPropertySymbol.fir.typeParameters.map { buildTypeProjectionWithVariance {
+        source = expression.source
+        variance = Variance.INVARIANT
+        typeRef = buildResolvedTypeRef { type = ConeTypeParameterTypeImpl(it.symbol.toLookupTag(), false) }
+    } })
+}","/**
+
+ * To cover `propertyRef` function
+
+ *
+
+ * @see org.jetbrains.kotlin.fir.builder.generateAccessorsByDelegate
+
+ */",f4161:m913
+56424,"@SinceKotlin(""1.9"") @WasExperimental(ExperimentalTime::class) public inline fun <T> TimeSource.measureTimedValue(block: () -> T): TimedValue<T>","{
+    contract { callsInPlace(block, InvocationKind.EXACTLY_ONCE) }
+    val mark = markNow()
+    val result = block()
+    return TimedValue(result, mark.elapsedNow())
+}","/**
+
+ * Executes the given function [block] and returns an instance of [TimedValue] class, containing both
+
+ * the result of function execution and the duration of elapsed time interval.
+
+ *
+
+ * The elapsed time is measured with the specified `this` [TimeSource] instance.
+
+ */",f16862:m171
+13782,@kotlin.internal.IntrinsicConstEvaluation public operator fun compareTo(other: Float): Int,this.compareTo(other.toDouble()),"/**
+
+     * Compares this value with the specified value for order.
+
+     * Returns zero if this value is equal to the specified other value, a negative number if it's less than other,
+
+     * or a positive number if it's greater than other.
+
+     */",f3686:m4681
+43420,"fun assertProcessRunResult(result: ProcessRunResult, assertions: ProcessRunResult.() -> Unit)","{
+    try {
+        result.assertions()
+    } catch (e: AssertionError) {
+        println(""""""
+        
+                        |Process info:
+        
+                        |#######################
+        
+                        |$result
+        
+                        |#######################
+        
+                        |
+        
+                        |Process output:
+        
+                        |#######################
+        
+                        |${result.output}
+        
+                        |#######################
+        
+                        |
+        
+                        |Process error output:
+        
+                        |#######################
+        
+                        |${result.stdErr}
+        
+                        |#######################
+        
+                        |
+        
+                        """""".trimMargin())
+        throw e
+    }
+}","/**
+
+ * Asserts the result of running a process by calling a set of assertions on the result object.
+
+ * If any of the assertions fail, an [AssertionError] is thrown and the process output information is printed.
+
+ *
+
+ * @param result The result of running a process.
+
+ * @param assertions A lambda expression that performs a set of assertions on it.
+
+ *
+
+ * @throws AssertionError If any of the assertions fail.
+
+ */",f13427:m133
+57075,@kotlin.internal.InlineOnly public inline fun File.writer(charset: Charset = Charsets.UTF_8): OutputStreamWriter,outputStream().writer(charset),"/**
+
+ * Returns a new [FileWriter] for writing the content of this file.
+
+ */",f16956:m77
+56133,"@kotlin.internal.InlineOnly public inline fun <T, K> Comparator<T>.thenBy(comparator: Comparator<in K>, crossinline selector: (T) -> K): Comparator<T>","Comparator { a, b ->
+    val previousCompare = this@thenBy.compare(a, b)
+    if (previousCompare != 0) previousCompare else compareValuesBy(a, b, comparator, selector)
+}","/**
+
+ * Creates a comparator comparing values after the primary comparator defined them equal. It uses
+
+ * the [selector] function to transform values and then compares them with the given [comparator].
+
+ *
+
+ * @sample samples.comparisons.Comparisons.thenByWithComparator
+
+ */",f16832:m295
+58899,"@SinceKotlin(""1.2"") public fun <T, R> Sequence<T>.zipWithNext(transform: (a: T, b: T) -> R): Sequence<R>","{
+    return sequence result@{
+        val iterator = iterator()
+        if (!iterator.hasNext()) return@result
+        var current = iterator.next()
+        while (iterator.hasNext()) {
+            val next = iterator.next()
+            yield(transform(current, next))
+            current = next
+        }
+    }
+}","/**
+
+ * Returns a sequence containing the results of applying the given [transform] function
+
+ * to an each pair of two adjacent elements in this sequence.
+
+ * 
+
+ * The returned sequence is empty if this sequence contains less than two elements.
+
+ *
+
+ * The operation is _intermediate_ and _stateless_.
+
+ * 
+
+ * @sample samples.collections.Collections.Transformations.zipWithNextToFindDeltas
+
+ */",f17096:m5709
+58681,public infix fun Long.until(to: Byte): LongRange,"{
+    return this .. (to.toLong() - 1).toLong()
+}","/**
+
+ * Returns a range from this value up to but excluding the specified [to] value.
+
+ * 
+
+ * If the [to] value is less than or equal to `this` value, then the returned range is empty.
+
+ */",f17092:m2103
+63459,"@SinceKotlin(""1.4"") public actual fun LongArray?.contentHashCode(): Int","{
+    if (this === null) return 0
+    var result = 1
+    for (element in this) result = 31 * result + element.hashCode()
+    return result
+}","/**
+
+ * Returns a hash code based on the contents of this array as if it is [List].
+
+ */",f17396:m1681
+61687,public infix fun ULong.until(to: ULong): ULongRange,"{
+    if (to <= ULong.MIN_VALUE) return ULongRange.EMPTY
+    return this .. (to - 1u).toULong()
+}","/**
+
+ * Returns a range from this value up to but excluding the specified [to] value.
+
+ *
+
+ * If the [to] value is less than or equal to `this` value, then the returned range is empty.
+
+ */",f17250:m61
+57488,"@SinceKotlin(""1.3"") @ExperimentalUnsignedTypes public fun UIntArray.binarySearch(element: UInt, fromIndex: Int = 0, toIndex: Int = size): Int","{
+    AbstractList.checkRangeIndexes(fromIndex, toIndex, size)
+    val signedElement = element.toInt()
+    var low = fromIndex
+    var high = toIndex - 1
+    while (low <= high) {
+        val mid = (low + high).ushr(1)
+        val midVal = storage[mid]
+        val cmp = uintCompare(midVal, signedElement)
+        if (cmp < 0) low = mid + 1 else if (cmp > 0) high = mid - 1 else return mid
+    }
+    return -(low + 1)
+}","/**
+
+ * Searches the array or the range of the array for the provided [element] using the binary search algorithm.
+
+ * The array is expected to be sorted, otherwise the result is undefined.
+
+ * 
+
+ * If the array contains multiple elements equal to the specified [element], there is no guarantee which one will be found.
+
+ * 
+
+ * @param element the to search for.
+
+ * @param fromIndex the start of the range (inclusive) to search in, 0 by default.
+
+ * @param toIndex the end of the range (exclusive) to search in, size of this array by default.
+
+ * 
+
+ * @return the index of the element, if it is contained in the array within the specified range;
+
+ * otherwise, the inverted insertion point `(-insertion point - 1)`.
+
+ * The insertion point is defined as the index at which the element should be inserted,
+
+ * so that the array (or the specified subrange of array) still remains sorted.
+
+ * 
+
+ * @throws IndexOutOfBoundsException if [fromIndex] is less than zero or [toIndex] is greater than the size of this array.
+
+ * @throws IllegalArgumentException if [fromIndex] is greater than [toIndex].
+
+ */",f16971:m263
+30667,@JvmStatic fun subscribeOperatorIndex(idx: Int): Name,"{
+    require(idx >= 0) { ""Index should be non-negative, but was $idx"" }
+    return Name.special(""<index_$idx>"")
+}","/**
+
+     * Special name to store expressions used as indexes in subscription operators (`get` and `set`).
+
+     *
+
+     * For example, `bar1()` and `bar2()` are indexes in `foo[bar1(), bar2()]` call.
+
+     */",f10753:m157
+64263,@kotlin.internal.IntrinsicConstEvaluation public inline infix fun shr(bitCount: Int): Long,"wasm_i64_shr_s(this, bitCount.toLong())","/**
+
+     * Shifts this value right by the [bitCount] number of bits, filling the leftmost bits with copies of the sign bit.
+
+     *
+
+     * Note that only the six lowest-order bits of the [bitCount] are used as the shift distance.
+
+     * The shift distance actually used is therefore always in the range `0..63`.
+
+     */",f17455:m3491
+58018,"@SinceKotlin(""1.6"") @WasExperimental(ExperimentalStdlibApi::class, ExperimentalUnsignedTypes::class) @kotlin.internal.InlineOnly public inline fun UShort.rotateRight(bitCount: Int): UShort",toShort().rotateRight(bitCount).toUShort(),"/**
+
+ * Rotates the binary representation of this [UShort] number right by the specified [bitCount] number of bits.
+
+ * The least significant bits pushed out from the right side reenter the number as the most significant bits on the left side.
+
+ *
+
+ * Rotating the number right by a negative bit count is the same as rotating it left by the negated bit count:
+
+ * `number.rotateRight(-n) == number.rotateLeft(n)`
+
+ *
+
+ * Rotating by a multiple of [UShort.SIZE_BITS] (16) returns the same number, or more generally
+
+ * `number.rotateRight(n) == number.rotateRight(n % 16)`
+
+ */",f17056:m571
+13565,"@SinceKotlin(""1.1"") @kotlin.internal.IntrinsicConstEvaluation public inline operator fun rem(other: Byte): Int",this.toInt() % other.toInt(),"/**
+
+     * Calculates the remainder of truncating division of this value (dividend) by the other value (divisor).
+
+     *
+
+     * The result is either zero or has the same sign as the _dividend_ and has the absolute value less than the absolute value of the divisor.
+
+     */",f3686:m1297
+65046,public actual fun todo(block: () -> Unit),"{
+    println(""TODO at "" + block)
+}","/**
+
+ * Takes the given [block] of test code and _doesn't_ execute it.
+
+ *
+
+ * This keeps the code under test referenced, but doesn't actually test it until it is implemented.
+
+ */",f17556:m19
+8775,private fun findEntryAliases(companionDescriptor: ClassDescriptor),companionDescriptor.defaultType.memberScope.getContributedDescriptors().filterIsInstance<PropertyDescriptor>().filter { it.annotations.hasAnnotation(cEnumEntryAliasAnnonation) },"/**
+
+     * Returns all properties in companion object that represent aliases to
+
+     * enum entries.
+
+     */",f3298:m141
+54658,"@SinceKotlin(""1.1"") @kotlin.internal.LowPriorityInOverloadResolution public actual infix fun <T> Array<out T>.contentDeepEquals(other: Array<out T>): Boolean","{
+    return this.contentDeepEquals(other)
+}","/**
+
+ * Checks if the two specified arrays are *deeply* equal to one another.
+
+ * 
+
+ * Two arrays are considered deeply equal if they have the same size, and elements at corresponding indices are deeply equal.
+
+ * That is, if two corresponding elements are nested arrays, they are also compared deeply.
+
+ * Elements of other types are compared for equality using the [equals][Any.equals] function.
+
+ * For floating point numbers, this means `NaN` is equal to itself and `-0.0` is not equal to `0.0`.
+
+ * 
+
+ * If any of the arrays contain themselves at any nesting level, the behavior is undefined.
+
+ * 
+
+ * @param other the array to compare deeply with this array.
+
+ * @return `true` if the two arrays are deeply equal, `false` otherwise.
+
+ * 
+
+ * @sample samples.collections.Arrays.ContentOperations.contentDeepEquals
+
+ */",f16713:m375
+24977,fun toScheme(): Scheme,"{
+    val context: MutableMap<Value, Int> = mutableMapOf()
+    var uniqueNumber = 0
+    fun mapValues(scheme: LazyScheme) {
+        val target = scheme.target
+        if (target.token == null) {
+            val value = target.value
+            val index = context[value]
+            if (index == -1) {
+                context[value] = uniqueNumber++
+            } else if (index == null) {
+                context[value] = -1
+            }
+        }
+        scheme.parameters.forEach { mapValues(it) }
+        scheme.result?.let { mapValues(it) }
+    }
+    fun itemOf(binding: Binding) = binding.token?.let { Token(it) } ?: context[binding.value]?.let { Open(it) } ?: Open(-1)
+    fun schemeOf(lazyScheme: LazyScheme): Scheme = Scheme(itemOf(lazyScheme.target), lazyScheme.parameters.map { schemeOf(it) }, lazyScheme.result?.let { schemeOf(it) }, lazyScheme.anyParameters)
+    mapValues(this)
+    return schemeOf(this)
+}","/**
+
+     * Create a [Scheme] from the current state of this.
+
+     */",f9238:m73
+49767,@ExternalKotlinTargetApi fun DecoratedExternalKotlinTarget.publishSources(jarTask: TaskProvider<Jar>),"{
+    delegate.sourcesElementsPublishedConfiguration.outgoing.artifact(jarTask) { artifact -> artifact.classifier = ""sources"" }
+}","/**
+
+ * Publishes the sources packaged by the given [jarTask] in this targets' publication.
+
+ *
+
+ * @since 1.9.20
+
+ */",f15951:m113
+59115,"@kotlin.jvm.JvmName(""sumOfUByte"") @SinceKotlin(""1.5"") @WasExperimental(ExperimentalUnsignedTypes::class) public fun Iterable<UByte>.sum(): UInt","{
+    var sum: UInt = 0u
+    for (element in this) {
+        sum += element
+    }
+    return sum
+}","/**
+
+ * Returns the sum of all elements in the collection.
+
+ */",f17099:m201
+52881,"@SinceKotlin(""1.4"") public actual fun Long.countTrailingZeroBits(): Int","when (val low = this.low) {
+    0 -> Int.SIZE_BITS + high.countTrailingZeroBits()
+    else -> low.countTrailingZeroBits()
+}","/**
+
+ * Counts the number of consecutive least significant bits that are zero in the binary representation of this [Long] number.
+
+ */",f16581:m387
+55633,"@SinceKotlin(""1.1"") @kotlin.internal.InlineOnly public inline infix fun Byte.and(other: Byte): Byte",(this.toInt() and other.toInt()).toByte(),/** Performs a bitwise AND operation between the two values. */,f16775:m15
+43529,fun Path.addCocoapodsBlock(str: String),"addKotlinBlock(str.wrapIntoBlock(""cocoapods""))","/**
+
+ * Wraps the given string into a Cocoapods block and adds this block to the end of the [this] path.
+
+ *
+
+ * @param str The code to be wrapped with the Cocoapods block.
+
+ */",f13455:m157
+14821,public actual fun <T> Array<out T>.asList(): List<T>,"{
+    return object : AbstractList<T>(), RandomAccess {
+        override val size: Int get() = this@asList.size
+    
+        override fun isEmpty(): Boolean = this@asList.isEmpty()
+    
+        override fun contains(element: T): Boolean = this@asList.contains(element)
+    
+        override fun get(index: Int): T = this@asList[index]
+    
+        override fun indexOf(element: T): Int = this@asList.indexOf(element)
+    
+        override fun lastIndexOf(element: T): Int = this@asList.lastIndexOf(element)
+    }
+}","/**
+
+ * Returns a [List] that wraps the original array.
+
+ */",f3831:m211
+63518,"internal fun <T> Array<T>.copyOfUninitializedElements(fromIndex: Int, toIndex: Int): Array<T>","{
+    val newSize = toIndex - fromIndex
+    if (newSize < 0) {
+        throw IllegalArgumentException(""$fromIndex > $toIndex"")
+    }
+    val result = arrayOfUninitializedElements<T>(newSize)
+    this.copyInto(result, 0, fromIndex, toIndex.coerceAtMost(size))
+    return result
+}","/**
+
+ * Returns new array which is a copy of the original array's range between [fromIndex] (inclusive)
+
+ * and [toIndex] (exclusive) with new elements filled with **lateinit** _uninitialized_ values.
+
+ * Attempts to read _uninitialized_ values from this array work in implementation-dependent manner,
+
+ * either throwing exception or returning some kind of implementation-specific default value.
+
+ */",f17396:m3313
+47880,fun rawStatement(statement: String),"{
+    statements.add(statement)
+}","/**
+
+     * Appends a statement 'as is' to the end of the generated podspec
+
+     */",f15476:m59
+64452,"@SinceKotlin(""1.5"") @WasExperimental(ExperimentalPathApi::class) @Throws(IOException::class) public fun Path.readText(charset: Charset = Charsets.UTF_8): String",reader(charset).use { it.readText() },"/**
+
+ * Gets the entire content of this file as a String using UTF-8 or the specified [charset].
+
+ *
+
+ * It's not recommended to use this function on huge files.
+
+ * For reading large files or files of unknown size, open a [Reader][Path.reader] and read blocks of text sequentially.
+
+ *
+
+ * @param charset character set to use for reading text, UTF-8 by default.
+
+ * @return the entire content of this file as a String.
+
+ */",f17469:m287
+54676,"@SinceKotlin(""1.4"") public actual fun IntArray?.contentHashCode(): Int","{
+    return contentHashCodeInternal()
+}","/**
+
+ * Returns a hash code based on the contents of this array as if it is [List].
+
+ */",f16713:m935
+14944,"@SinceKotlin(""1.3"") @Suppress(""ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS"") public actual fun <T> Array<T>.fill(element: T, fromIndex: Int = 0, toIndex: Int = size): Unit","{
+    arrayFill(this, fromIndex, toIndex, element)
+}","/**
+
+ * Fills this array or its subrange with the specified [element] value.
+
+ * 
+
+ * @param fromIndex the start of the range (inclusive) to fill, 0 by default.
+
+ * @param toIndex the end of the range (exclusive) to fill, size of this array by default.
+
+ * 
+
+ * @throws IndexOutOfBoundsException if [fromIndex] is less than zero or [toIndex] is greater than the size of this array.
+
+ * @throws IllegalArgumentException if [fromIndex] is greater than [toIndex].
+
+ */",f3831:m3711
+196,private fun JsNode.withParentsOfNodes(nodes: Set<JsNode>): Set<JsNode>,"{
+    val visitor = object : JsExpressionVisitor() {
+        private val stack = SmartList<JsNode>()
+    
+        val matched = IdentitySet<JsNode>()
+    
+        override fun <R: JsNode> doTraverse(node: R, ctx: JsContext<JsNode>?) {
+            stack.add(node)
+            super.doTraverse(node, ctx)
+            if (node in nodes) {
+                addAllUntilMatchedOrStatement(stack)
+            }
+            stack.removeAt(stack.lastIndex)
+        }
+    
+        fun addAllUntilMatchedOrStatement(nodesOnStack: List<JsNode>) {
+            for (i in nodesOnStack.lastIndex downTo 0) {
+                val currentNode = nodesOnStack[i]
+                if (currentNode in matched) break
+                matched.add(currentNode)
+                if (currentNode is JsStatement) break
+            }
+        }
+    }
+    visitor.accept(this)
+    return visitor.matched
+}","/**
+
+ * Returns set of nodes, that satisfy transitive closure of `is parent` relation, starting from [nodes].
+
+ */",f100:m979
+46396,"fun filter(predicate: (Family, TParam) -> Boolean)","{
+    this.filterPredicate = predicate
+}",/** Sets the filter predicate that is applied to a produced sequence of variations. */,f15048:m175
+20197,public fun KtFunction.getFunctionalType(): KtType,withValidityAssertion { analysisSession.expressionTypeProvider.getFunctionalTypeForKtFunction(this) },"/**
+
+     * Returns the functional type of the given [KtFunction].
+
+     *
+
+     * For a regular function, it would be kotlin.FunctionN<Ps, R> where
+
+     *   N is the number of value parameters in the function;
+
+     *   Ps are types of value parameters;
+
+     *   R is the return type of the function.
+
+     * Depending on the function's attributes, such as `suspend` or reflective access, different functional type,
+
+     * such as `SuspendFunction`, `KFunction`, or `KSuspendFunction`, will be constructed.
+
+     */",f5788:m93
+54691,"@SinceKotlin(""1.3"") @kotlin.internal.InlineOnly @Suppress(""ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS"") public actual inline fun <T> Array<out T>.copyInto(destination: Array<T>, destinationOffset: Int = 0, startIndex: Int = 0, endIndex: Int = size): Array<T>","{
+    arrayCopy(this, destination, destinationOffset, startIndex, endIndex)
+    return destination
+}","/**
+
+ * Copies this array or its subrange into the [destination] array and returns that array.
+
+ * 
+
+ * It's allowed to pass the same array in the [destination] and even specify the subrange so that it overlaps with the destination range.
+
+ * 
+
+ * @param destination the array to copy to.
+
+ * @param destinationOffset the position in the [destination] array to copy to, 0 by default.
+
+ * @param startIndex the beginning (inclusive) of the subrange to copy, 0 by default.
+
+ * @param endIndex the end (exclusive) of the subrange to copy, size of this array by default.
+
+ * 
+
+ * @throws IndexOutOfBoundsException or [IllegalArgumentException] when [startIndex] or [endIndex] is out of range of this array indices or when `startIndex > endIndex`.
+
+ * @throws IndexOutOfBoundsException when the subrange doesn't fit into the [destination] array starting at the specified [destinationOffset],
+
+ * or when that index is out of the [destination] array indices range.
+
+ * 
+
+ * @return the [destination] array.
+
+ */",f16713:m1211
+55151,public operator fun rangeTo(other: Int): LongRange,"LongRange(this, other.toLong())",/** Creates a range from this value to the specified [other] value. */,f16727:m2937
+54806,"@SinceKotlin(""1.1"") @kotlin.internal.InlineOnly public actual inline fun maxOf(a: Byte, b: Byte, c: Byte): Byte","{
+    return JsMath.max(a.toInt(), b.toInt(), c.toInt()).unsafeCast<Byte>()
+}","/**
+
+ * Returns the greater of three values.
+
+ */",f16714:m185
+63544,"@SinceKotlin(""1.3"") @Suppress(""ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS"") public actual fun CharArray.fill(element: Char, fromIndex: Int = 0, toIndex: Int = size): Unit","{
+    AbstractList.checkRangeIndexes(fromIndex, toIndex, size)
+    for (index in fromIndex until toIndex) {
+        this[index] = element
+    }
+}","/**
+
+ * Fills this array or its subrange with the specified [element] value.
+
+ * 
+
+ * @param fromIndex the start of the range (inclusive) to fill, 0 by default.
+
+ * @param toIndex the end of the range (exclusive) to fill, size of this array by default.
+
+ * 
+
+ * @throws IndexOutOfBoundsException if [fromIndex] is less than zero or [toIndex] is greater than the size of this array.
+
+ * @throws IllegalArgumentException if [fromIndex] is greater than [toIndex].
+
+ */",f17396:m4051
+51537,override fun equals(other: Any?): Boolean,this === other || other is KmAnnotation && className == other.className && arguments == other.arguments,"/**
+
+     * Checks if this KmAnnotation is equal to the [other].
+
+     * Instances of KmAnnotation are equal if they have same [className] and [arguments].
+
+     */",f16336:m41
+63257,public actual fun String.toLong(radix: Int): Long,toLongOrNull(radix) ?: numberFormatError(this),"/**
+
+ * Parses the string as a [Long] number and returns the result.
+
+ * @throws NumberFormatException if the string is not a valid representation of a number.
+
+ * @throws IllegalArgumentException when [radix] is not a valid radix for string to number conversion.
+
+ */",f17352:m123
+57395,public actual fun CharArray.toTypedArray(): Array<Char>,"{
+    val result = arrayOfNulls<Char>(size)
+    for (index in indices) result[index] = this[index]
+    @Suppress(""UNCHECKED_CAST"") return result as Array<Char>
+}","/**
+
+ * Returns a *typed* object array containing all of the elements of this primitive array.
+
+ */",f16970:m4675
+57378,"@Suppress(""ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS"") public actual fun ByteArray.sort(fromIndex: Int = 0, toIndex: Int = size): Unit","{
+    java.util.Arrays.sort(this, fromIndex, toIndex)
+}","/**
+
+ * Sorts a range in the array in-place.
+
+ * 
+
+ * @param fromIndex the start of the range (inclusive) to sort, 0 by default.
+
+ * @param toIndex the end of the range (exclusive) to sort, size of this array by default.
+
+ * 
+
+ * @throws IndexOutOfBoundsException if [fromIndex] is less than zero or [toIndex] is greater than the size of this array.
+
+ * @throws IllegalArgumentException if [fromIndex] is greater than [toIndex].
+
+ * 
+
+ * @sample samples.collections.Arrays.Sorting.sortRangeOfArray
+
+ */",f16970:m4213
+57470,"@SinceKotlin(""1.4"") @OptIn(kotlin.experimental.ExperimentalTypeInference::class) @OverloadResolutionByLambdaReturnType @kotlin.jvm.JvmName(""sumOfBigDecimal"") @kotlin.internal.InlineOnly public inline fun CharArray.sumOf(selector: (Char) -> java.math.BigDecimal): java.math.BigDecimal","{
+    var sum: java.math.BigDecimal = 0.toBigDecimal()
+    for (element in this) {
+        sum += selector(element)
+    }
+    return sum
+}","/**
+
+ * Returns the sum of all values produced by [selector] function applied to each element in the array.
+
+ */",f16970:m5889
+64313,"@SinceKotlin(""1.1"") @kotlin.internal.IntrinsicConstEvaluation public operator fun rem(other: Float): Float","wasm_f32_copysign(this - (wasm_f32_truncate(this / other) * other), this)","/**
+
+     * Calculates the remainder of truncating division of this value (dividend) by the other value (divisor).
+
+     *
+
+     * The result is either zero or has the same sign as the _dividend_ and has the absolute value less than the absolute value of the divisor.
+
+     */",f17455:m4299
+45558,@Test fun testChecksCorrectChangingBooleanMetricsVersion(),"{
+    val actualBooleanMetricsVersionAndHash = Pair(BooleanMetrics.VERSION, calculateFileChecksum(BOOLEAN_METRICS_RELATIVE_PATH))
+    assertEquals(BOOLEAN_METRICS_EXPECTED_VERSION_AND_HASH, actualBooleanMetricsVersionAndHash, ""Hash of ${BooleanMetrics::class.qualifiedName} has been changed, please increase VERSION value. "" + ""Also you need to update hash and version in this test class."")
+}","/**
+
+     * Test checks for that the version of [BooleanMetrics] was increased after changes in this file
+
+     */",f14865:m113
+57151,"@SinceKotlin(""1.1"") @kotlin.internal.InlineOnly public actual inline fun maxOf(a: Float, b: Float, c: Float): Float","{
+    return maxOf(a, maxOf(b, c))
+}","/**
+
+ * Returns the greater of three values.
+
+ * 
+
+ * If any value is `NaN`, returns `NaN`.
+
+ */",f16966:m261
+59063,"@Deprecated(""Use sumOf instead."", ReplaceWith(""this.sumOf(selector)"")) @DeprecatedSinceKotlin(warningSince = ""1.5"") public inline fun CharSequence.sumByDouble(selector: (Char) -> Double): Double","{
+    var sum: Double = 0.0
+    for (element in this) {
+        sum += selector(element)
+    }
+    return sum
+}","/**
+
+ * Returns the sum of all values produced by [selector] function applied to each character in the char sequence.
+
+ */",f17097:m4223
+64086,@kotlin.internal.IntrinsicConstEvaluation public inline operator fun compareTo(other: Byte): Int,this.compareTo(other.toShort()),"/**
+
+     * Compares this value with the specified value for order.
+
+     * Returns zero if this value is equal to the specified other value, a negative number if it's less than other,
+
+     * or a positive number if it's greater than other.
+
+     */",f17455:m949
+56219,"@SinceKotlin(""1.5"") @kotlin.internal.InlineOnly @kotlin.internal.IntrinsicConstEvaluation public inline fun Byte.floorDiv(other: Byte): Int",this.toInt().floorDiv(other.toInt()),"/** Divides this value by the other value, flooring the result to an integer that is closer to negative infinity. */",f16842:m29
+54738,"@Suppress(""NOTHING_TO_INLINE"") public actual inline operator fun ShortArray.plus(element: Short): ShortArray","{
+    return plus(shortArrayOf(element))
+}","/**
+
+ * Returns an array containing all elements of the original array and then the given [element].
+
+ */",f16713:m2647
+67418,internal fun ICConfiguration.extractIncrementalCompilationFeatures(): IncrementalCompilationFeatures,"{
+    return IncrementalCompilationFeatures(withAbiSnapshot = false, preciseCompilationResultsBackup = preciseCompilationResultsBackupEnabled, keepIncrementalCompilationCachesInMemory = incrementalCompilationCachesKeptInMemory)
+}","/**
+
+ * IncrementalJvmCompilationConfiguration provides single-property API for forward-compatibility.
+
+ *
+
+ * configurationAdapters are there to regroup the properties and work with higher-level interfaces.
+
+ */",f19192:m25
+54804,"@SinceKotlin(""1.1"") @kotlin.internal.InlineOnly public actual inline fun maxOf(a: Double, b: Double): Double","{
+    return JsMath.max(a, b)
+}","/**
+
+ * Returns the greater of two values.
+
+ * 
+
+ * If either value is `NaN`, returns `NaN`.
+
+ */",f16714:m143
+41004,fun File.deleteRecursivelyOrThrow(),"{
+    if (!deleteRecursively()) {
+        throw IOException(""Could not delete '$path'"")
+    }
+}","/** Deletes this file or directory recursively (if it exists), throwing an exception if the deletion failed. */",f12982:m87
+63181,"@SinceKotlin(""1.6"") @WasExperimental(ExperimentalStdlibApi::class) public actual fun Int.rotateRight(bitCount: Int): Int",shl(32 - bitCount) or ushr(bitCount),"/**
+
+ * Rotates the binary representation of this [Int] number right by the specified [bitCount] number of bits.
+
+ * The least significant bits pushed out from the right side reenter the number as the most significant bits on the left side.
+
+ *
+
+ * Rotating the number right by a negative bit count is the same as rotating it left by the negated bit count:
+
+ * `number.rotateRight(-n) == number.rotateLeft(n)`
+
+ *
+
+ * Rotating by a multiple of [Int.SIZE_BITS] (32) returns the same number, or more generally
+
+ * `number.rotateRight(n) == number.rotateRight(n % 32)`
+
+ */",f17314:m119
+54731,"@SinceKotlin(""1.3"") @Suppress(""ACTUAL_FUNCTION_WITH_DEFAULT_ARGUMENTS"") public actual fun LongArray.fill(element: Long, fromIndex: Int = 0, toIndex: Int = size): Unit","{
+    AbstractList.checkRangeIndexes(fromIndex, toIndex, size)
+    nativeFill(element, fromIndex, toIndex)
+}","/**
+
+ * Fills this array or its subrange with the specified [element] value.
+
+ * 
+
+ * @param fromIndex the start of the range (inclusive) to fill, 0 by default.
+
+ * @param toIndex the end of the range (exclusive) to fill, size of this array by default.
+
+ * 
+
+ * @throws IndexOutOfBoundsException if [fromIndex] is less than zero or [toIndex] is greater than the size of this array.
+
+ * @throws IllegalArgumentException if [fromIndex] is greater than [toIndex].
+
+ */",f16713:m2453
+13258,"fun tryExpandPredefinedTypealias(classifier: Classifier, nullable: Boolean, typeArguments: List<TypeArgument>): AbbreviatedType?","when (classifier) {
+    in primitiveVarClassifierToPrimitiveType.keys -> expandPrimitiveVarType(classifier, nullable)
+    KotlinTypes.cOpaquePointer.classifier -> expandCOpaquePointer(nullable)
+    KotlinTypes.cOpaquePointerVar.classifier -> expandCOpaquePointerVar(nullable)
+    KotlinTypes.cPointerVar -> expandCPointerVar(typeArguments, nullable)
+    KotlinTypes.objCObjectMeta -> expandObjCObjectMeta(typeArguments, nullable)
+    KotlinTypes.cArrayPointer -> expandCArrayPointer(typeArguments, nullable)
+    KotlinTypes.objCBlockVar -> expandObjCBlockVar(typeArguments, nullable)
+    else -> null
+}","/**
+
+     * @return [ClassifierStubType] if [classifier] is a typealias from [kotlinx.cinterop] package.
+
+     */",f3652:m395
+63279,"private fun malformed(size: Int, index: Int, throwOnMalformed: Boolean): Int","{
+    if (throwOnMalformed) throw CharacterCodingException(""Malformed sequence starting at ${index - 1}"")
+    return -size
+}","/** Returns the negative [size] if [throwOnMalformed] is false, throws [CharacterCodingException] otherwise. */",f17358:m15
+16753,"fun lazyResolveTarget(target: LLFirResolveTarget, toPhase: FirResolvePhase)","{
+    try {
+        target.firFile?.let(::resolveFileToImportsWithLock)
+        if (toPhase == FirResolvePhase.IMPORTS) return
+        lazyResolveTargets(target, toPhase)
+    } catch (e: Exception) {
+        handleExceptionFromResolve(e, target, toPhase)
+    }
+}","/**
+
+     * Lazily resolves all the declarations which are specified for resolve by [target]
+
+     *
+
+     * Might resolve additional required declarations.
+
+     *
+
+     * Resolution is performed under the lock specific to each declaration which is going to be resolved.
+
+     */",f4163:m169
+9333,"private fun getMangledNameFor(declarationName: String, parent: IrDeclarationParent): Name","{
+    val prefix = parent.fqNameForIrSerialization
+    return ""$prefix.$declarationName"".synthesizedName
+}","/**
+
+     * Generate name for declaration that will be a part of internal ABI.
+
+     */",f3348:m179
+56953,"@SinceKotlin(""1.3"") @JvmName(""getStackTraceElement"") internal fun BaseContinuationImpl.getStackTraceElementImpl(): StackTraceElement?","{
+    val debugMetadata = getDebugMetadataAnnotation() ?: return null
+    checkDebugMetadataVersion(COROUTINES_DEBUG_METADATA_VERSION, debugMetadata.version)
+    val label = getLabel()
+    val lineNumber = if (label < 0) -1 else debugMetadata.lineNumbers[label]
+    val moduleName = ModuleNameRetriever.getModuleName(this)
+    val moduleAndClass = if (moduleName == null) debugMetadata.className else ""$moduleName/${debugMetadata.className}""
+    return StackTraceElement(moduleAndClass, debugMetadata.methodName, debugMetadata.sourceFile, lineNumber)
+}","/**
+
+ * Returns [StackTraceElement] containing file name and line number of current coroutine's suspension point.
+
+ * The coroutine can be either running coroutine, that calls the function on its continuation and obtaining
+
+ * the information about current file and line number, or, more likely, the function is called to produce accurate stack traces of
+
+ * suspended coroutine.
+
+ *
+
+ * The result is `null` when debug metadata is not available.
+
+ */",f16941:m61
+67579,fun StorageComponentContainer.configureStandardResolveComponents(),"{
+    useImpl<ResolveSession>()
+    useImpl<LazyTopDownAnalyzer>()
+    useImpl<AnnotationResolverImpl>()
+}","/**
+
+ * Actually, those should be present in 'configurePlatformIndependentComponents',
+
+ * but, unfortunately, this is currently impossible, because in some lightweight
+
+ * containers (see [createContainerForBodyResolve] and similar) some dependencies
+
+ * are missing
+
+ *
+
+ * If you're not doing some trickery with containers, you should use them.
+
+ */",f19223:m361
