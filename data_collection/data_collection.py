@@ -9,6 +9,14 @@ import git
 import json
 from tqdm import tqdm
 
+import signal
+
+
+def timeout_handler(signum, frame):
+    raise TimeoutError("Function execution timed out")
+
+signal.signal(signal.SIGALRM, timeout_handler)
+
 
 def clone_repository(repo_url, destination):
     """
@@ -142,6 +150,7 @@ if __name__ == '__main__':
     failed_to_parse_files = []
 
     for file_num, file in enumerate(tqdm(files)):
+        signal.alarm(15)
         try:
             with open(file, 'r') as f:
                 code = "\n".join(f.readlines())
@@ -149,6 +158,7 @@ if __name__ == '__main__':
             append_to_dataset(output_file, parsed_data)
         except Exception as e:
             failed_to_parse_files.append(file)
+        signal.alarm(0)
 
     all = len(files)
     success = all - len(failed_to_parse_files)
